@@ -1,11 +1,12 @@
 QBCore = exports["qb-core"]:GetCoreObject()
 local knockedOut = false
 
-local function WakeUp()
+local function WakeUp(ped)
     if knockedOut then
         ClearTimecycleModifier()
         lib.hideTextUI()
         knockedOut = false
+        SetEntityInvincible(ped, false)
     end
 end
 
@@ -19,7 +20,7 @@ local function KnockedOutLoop(ped)
             SetPedToRagdoll(ped, 500, 500, 0, 0, 0, 0)
             ResetPedRagdollTimer(ped)
             if PlayerData.metadata.isdead or PlayerData.metadata.inlaststand then
-                WakeUp()
+                WakeUp(ped)
             end
         end
     end)
@@ -33,9 +34,10 @@ AddEventHandler('gameEventTriggered', function(event, data)
                 if GetEntityHealth(ped) < Config.Health then
                     if not knockedOut then
                         knockedOut = true
+                        SetEntityInvincible(ped, true)
                         KnockedOutLoop(ped)
                         Wait(Config.KnockoutTime * 1000)
-                        WakeUp()
+                        WakeUp(ped)
                     end
                 end
             end
