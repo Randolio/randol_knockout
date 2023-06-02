@@ -28,16 +28,19 @@ end
 
 AddEventHandler('gameEventTriggered', function(event, data)
     if event == "CEventNetworkEntityDamage" then
-        local ped = data[1]
-        if IsPedInMeleeCombat(ped) then
-            if HasPedBeenDamagedByWeapon(ped, GetHashKey("WEAPON_UNARMED"), 0) then
-                if GetEntityHealth(ped) < Config.Health then
-                    if not knockedOut then
-                        knockedOut = true
-                        SetEntityInvincible(ped, true)
-                        KnockedOutLoop(ped)
-                        Wait(Config.KnockoutTime * 1000)
-                        WakeUp(ped)
+        local victim = NetworkGetPlayerIndexFromPed(data[1])
+        if victim == PlayerId() then
+            ped = PlayerPedId()
+            if IsPedInMeleeCombat(ped) then
+                if HasPedBeenDamagedByWeapon(ped, GetHashKey("WEAPON_UNARMED"), 0) then
+                    if GetEntityHealth(ped) < Config.Health then
+                        if not knockedOut then
+                            knockedOut = true
+                            SetEntityInvincible(ped, true)
+                            KnockedOutLoop(ped)
+                            Wait(Config.KnockoutTime * 1000)
+                            WakeUp(ped)
+                        end
                     end
                 end
             end
