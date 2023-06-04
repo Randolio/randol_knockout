@@ -1,5 +1,2 @@
 # randol_knockout
-A simple knockout script for QBCore.
-
-Requirements: 
-https://github.com/overextended/ox_lib/releases
+A simple knockout script [STANDALONE VERSION]
