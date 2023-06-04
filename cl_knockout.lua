@@ -1,10 +1,21 @@
-QBCore = exports["qb-core"]:GetCoreObject()
 local knockedOut = false
+
+local function KOText(message)
+    SetTextFont(4)
+    SetTextScale(0.5, 0.9)
+    SetTextColour(255, 255, 255, 255)
+    SetTextDropshadow(0, 0, 0, 0, 255)
+    SetTextDropShadow()
+    SetTextOutline()
+    SetTextCentre(true)
+    BeginTextCommandDisplayText('STRING')
+    AddTextComponentSubstringPlayerName(message)
+    EndTextCommandDisplayText(0.5, 0.8)
+end
 
 local function WakeUp(ped)
     if knockedOut then
         ClearTimecycleModifier()
-        lib.hideTextUI()
         knockedOut = false
         SetEntityInvincible(ped, false)
     end
@@ -12,12 +23,11 @@ end
 
 local function KnockedOutLoop(ped)
     SetTimecycleModifier("hud_def_blur")
-    lib.showTextUI('You are currently knocked out..', {position = "top-center"})
     CreateThread(function()
         while knockedOut do
-            Wait(100)
+            Wait(0)
+            KOText(Config.Message)
             SetPedToRagdoll(ped, 500, 500, 0, 0, 0, 0)
-            ResetPedRagdollTimer(ped)
             if IsEntityDead(ped) then
                 WakeUp(ped)
             end
