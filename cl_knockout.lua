@@ -16,10 +16,9 @@ local function KnockedOutLoop(ped)
     CreateThread(function()
         while knockedOut do
             Wait(100)
-            local PlayerData = QBCore.Functions.GetPlayerData()
             SetPedToRagdoll(ped, 500, 500, 0, 0, 0, 0)
             ResetPedRagdollTimer(ped)
-            if PlayerData.metadata.isdead or PlayerData.metadata.inlaststand then
+            if IsEntityDead(ped) then
                 WakeUp(ped)
             end
         end
