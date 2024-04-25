@@ -1,6 +1,5 @@
-Config = {}
-
-Config.KnockoutTime = 20 -- 20 seconds
-
-Config.Health = 125
-
+return {
+    RestoreHealth = true, -- Will slowly restore players health when knocked out.
+    KnockoutTime = 20, -- 20 seconds
+    Health = 125,
+}
