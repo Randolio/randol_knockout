@@ -1,3 +1,4 @@
+local Config = lib.require('config')
 local knockedOut = false
 
 local function wakeUp()
@@ -11,14 +12,22 @@ end
 local function knockedOutLoop()
     SetTimecycleModifier('hud_def_blur')
     lib.showTextUI('You are currently knocked out..', {position = 'top-center'})
+
+    if Config.RestoreHealth then
+        CreateThread(function()
+            while GetEntityHealth(cache.ped) < GetEntityMaxHealth(cache.ped) and knockedOut do
+                Wait(2000)
+                SetEntityHealth(cache.ped, GetEntityHealth(cache.ped) + 5)
+            end
+        end)
+    end
+
     CreateThread(function()
         while knockedOut do
             Wait(100)
             SetPedToRagdoll(cache.ped, 500, 500, 0, 0, 0, 0)
             ResetPedRagdollTimer(cache.ped)
-            if IsEntityDead(cache.ped) then
-                wakeUp()
-            end
+            if IsEntityDead(cache.ped) then wakeUp() end
         end
     end)
 end
